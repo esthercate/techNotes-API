@@ -9,7 +9,7 @@ const cors = require('cors')
 const corsOptions = require('./config/corsOptions')
 const PORT = process.env.PORT || 3500
 
-console.log(process.env.NODE_ENV);
+console.log(process.env.NODE_ENV); // should log development
 
 app.use(logger)
 
