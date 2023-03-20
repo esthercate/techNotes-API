@@ -1,13 +1,19 @@
 const express = require('express')
 const app = express()
 const path = require('path')
+const {logger} = require('./middleware/logger')
 const PORT = process.env.PORT || 3500
 
-app.use('/', express.static(path.join(__dirname, '/public'))) // find css, images, etc
+app.use(logger)
+
+app.use(express.json()) // use json in our app
+
+app.use('/', express.static(path.join(__dirname, 'public'))) // find css, images, etc, static files
 
 app.use('/', require('./routes/root'))
 
-app.call('*', (req, res) => {
+
+app.all('*', (req, res) => {
     res.status(404)
     if (req.accepts('html')) {
         res.sendFile(path.join(__dirname, 'views', '404.html'))
@@ -17,5 +23,6 @@ app.call('*', (req, res) => {
         res.type('txt').send('404 NotFound')
     }
 })
+
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`))
